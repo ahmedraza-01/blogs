@@ -2,21 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
+
+   
     public function index()
     {
         $user = Auth::user();
     
-        $posts = Post::where('user_id', $user->id)->get();
+        $posts = Post::where('user_id', $user->id)->with('category')->get();
     
         return view('posts.index', compact('posts'));
     }
+    
+  
     public function home()
     {
         $posts = Post::all();
@@ -24,8 +30,9 @@ class PostController extends Controller
     }
 
     public function create()
-    {
-        return view('posts.create');
+    {   
+        $categories = Category::all();
+        return view('posts.create',  compact('categories'));
     }
     public function store(Request $request)
     {
@@ -33,6 +40,7 @@ class PostController extends Controller
             'title' => 'required',
             'excerpt' => 'required',
             'body' => 'required',
+            'category_id' => 'required|exists:categories,id',
             'image' => 'image|mimes:jfif,jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
@@ -40,6 +48,7 @@ class PostController extends Controller
             'user_id' => auth()->id(),
             'title' => $request->get('title'),
             'excerpt' => $request->get('excerpt'),
+            'category_id' => $request->get('category_id'),
             'body' => $request->get('body'),
         ]);
 

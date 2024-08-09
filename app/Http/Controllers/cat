@@ -1,0 +1,4 @@
+ $posts = Post::where('user_id', $user->id)->with('category')->get();--index
+  $categories = Category::all();--create
+  'category_id' => 'required|exists:categories,id',--store
+   'category_id' => $request->get('category_id'),--store

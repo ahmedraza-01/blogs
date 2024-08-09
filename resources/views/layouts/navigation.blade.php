@@ -8,24 +8,19 @@
                     <a href="{{ route('dashboard') }}">
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
                     </a>
-                    
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                   
                     <x-nav-link :href="route('posts.home')" :active="request()->routeIs('posts.home')">
-                        {{ __('All Posts') }}
+                        {{ __('Home') }}
                     </x-nav-link>
                     <x-nav-link :href="route('posts.index')" :active="request()->routeIs('posts.index')">
                         {{ __('My Posts') }}
                     </x-nav-link>
-                    
                 </div>
             </div>
-            <div>
-                <h1 class="mt-4 text-2xl text-center w-40 h-20 fill-current text-gray-500"><b>Blog App</b></h1>
-            </div>
+
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
