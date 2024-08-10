@@ -7,7 +7,7 @@
             @endif
             <h1 class="h2 font-weight-bold mb-4 mt-4">{{ $post->title }}</h1>
             <p> <?=$post->body?> </p>
-            @if (Auth::id() == $post->user_id) 
+            @if (Auth::id() == $post->user_id || Auth::user()->hasRole('admin')) 
             
             <div class="d-flex gap-3 mt-4">
                 <a href="{{ route('posts.edit', $post->id) }}" class="text-primary">Edit</a>

@@ -1,15 +1,17 @@
 <?php
 
 use App\Http\Controllers\FormController;
+use App\Http\Controllers\MediumController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
+
 use App\Http\Middleware\AdminMiddleware;
 use App\Models\User;
 
 Route::get('/', [PostController::class, 'home'])->name('posts.home');
-
+Route::get('/medium-posts', [MediumController::class, 'index']);
 Route::get('/dashboard', function () {
     return view('home');
 })->middleware(['auth', 'verified'])->name('dashboard');

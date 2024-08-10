@@ -27,14 +27,15 @@
                                 <td>{{ $post->title }}</td>
                                 <td>{{ $post->category->name }}</td>
                                 <td>
-                                    <a href="{{ route('posts.show', $post->id) }}" class="text-primary">View</a>
-                                    <a href="{{ route('posts.edit', $post->id) }}" class="text-warning ml-2">Edit</a>
+                                    <a href="{{ route('posts.show', $post->id) }}" class="btn btn-primary btn-sm">View</a>
+                                    <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-warning btn-sm ml-2">Edit</a>
                                     <form action="{{ route('posts.destroy', $post->id) }}" method="POST" class="d-inline ml-2" onsubmit="return confirm('Are you sure you want to delete this post?');">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-link text-danger p-0">Delete</button>
+                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                                     </form>
                                 </td>
+                                
                             </tr>
                         @endforeach
                     </tbody>

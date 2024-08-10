@@ -17,10 +17,15 @@ class PostController extends Controller
     {
         $user = Auth::user();
     
-        $posts = Post::where('user_id', $user->id)->with('category')->get();
+        if ($user->hasRole('admin')) {
+            $posts = Post::with('category')->get();
+        } else {
+            $posts = Post::where('user_id', $user->id)->with('category')->get();
+        }
     
         return view('posts.index', compact('posts'));
     }
+    
     
   
     public function home()
@@ -75,11 +80,15 @@ class PostController extends Controller
 
     public function edit(Post $post)
     {
-        if (Auth::id() != $post->user_id) {
+        if (Auth::id() == $post->user_id || Auth::user()->hasRole('admin')) {
+            $categories = Category::all();
+    
+            return view('posts.edit', compact('post', 'categories'));
+        } else {
             abort(403);
         }
-        return view('posts.edit', compact('post'));
     }
+    
 
     public function update(Request $request, Post $post)
     {
@@ -91,7 +100,8 @@ class PostController extends Controller
             'title' => 'required',
             'excerpt' => 'required',
             'body' => 'required',
-            'image' => 'image|nullable|max:1999'
+            'image' => 'image|nullable|max:1999',
+            'category_id' => 'required|integer|exists:categories,id',
         ]);
 
         if ($request->hasFile('image')) {
@@ -111,6 +121,7 @@ class PostController extends Controller
         $post->title = $request->get('title');
         $post->excerpt = $request->get('excerpt');
         $post->body = $request->get('body');
+        $post->category_id = $request->get('category_id'); 
         $post->save();
 
         return redirect()->route('posts.index')->with('success', 'Post updated successfully');
@@ -118,15 +129,19 @@ class PostController extends Controller
 
     public function destroy(Post $post)
     {
-        if (Auth::id() != $post->user_id) {
+        if (Auth::id() == $post->user_id || Auth::user()->hasRole('admin')) {
+            if ($post->picture) {
+                Storage::delete('public/pictures/' . $post->picture);
+            } 
+            
+        }
+        else{
             abort(403);
         }
-
-        if ($post->picture) {
-            Storage::delete('public/pictures/' . $post->picture);
-        }
-
         $post->delete();
+      
+
+       
 
         return redirect()->route('posts.index')->with('success', 'Post deleted successfully');
     }

@@ -16,7 +16,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color:#c4c4c4 !important">
         <div class="container-fluid">
             <a class="navbar-brand" href="{{ route('dashboard') }}">
                 <x-application-logo class="d-inline-block align-text-top" />
@@ -34,7 +34,13 @@
                     </li>
                    @if(Auth::user())
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('posts.index') ? 'active' : '' }}" href="{{ route('posts.index') }}">My Posts</a>
+                        <a class="nav-link {{ request()->routeIs('posts.index') ? 'active' : '' }}" href="{{ route('posts.index') }}">
+                            @if (auth()->user()->hasRole('admin'))
+                            Manage Posts 
+                        @else
+                            My Posts
+                            @endif
+                        </a>
                     </li>
                     @if (auth()->user()->hasRole('admin'))
                     <li class="nav-item">
@@ -101,7 +107,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-light text-center text-lg-start mt-auto py-4">
+    <footer class=" text-center text-lg-start mt-auto py-4" style="background-color:#c4c4c4 !important" >
         <div class="container">
             <div class="row">
                 <!-- Logo Section -->
@@ -112,7 +118,7 @@
                 <!-- Links Section -->
                 <div class="col-12 mb-3">
                     <ul class="list-unstyled" style="margin-left:20px;">
-                        <li><a href="#"  class="text-dark text-decoration-none">Home</a></li>
+                        <li><a href="#" class="text-dark text-decoration-none">Home</a></li>
                         <li><a href="#" class="text-dark text-decoration-none">About Us</a></li>
                         <li><a href="#" class="text-dark text-decoration-none">Services</a></li>
                         <li><a href="#" class="text-dark text-decoration-none">Contact</a></li>

@@ -24,13 +24,27 @@
                 <label for="excerpt" class="form-label">Excerpt</label>
                 <textarea name="excerpt" id="excerpt-editor" class="form-control" required>{{ $post->excerpt }}</textarea>
             </div>
+            
+            <div class="mb-3">
+                <label for="category" class="form-label">Category</label>
+                <select name="category_id" id="category" class="form-control" required>
+                    <option value="" disabled>Select a category</option>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->id }}" {{ $post->category_id == $category->id ? 'selected' : '' }}>
+                            {{ $category->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            
             <div class="mb-3">
                 <label for="picture" class="form-label">Picture</label>
                 <input type="file" name="image" id="image" class="form-control">
                 @if ($post->image)
-                <img src="{{ asset('storage/image/' . $post->image) }}" alt="Current picture" class="mt-3 img-thumbnail w-100 h-100 object-fit-cover" style="max-width: 8rem; max-height: 8rem;">
+                    <img src="{{ asset('storage/image/' . $post->image) }}" alt="Current picture" class="mt-3 img-thumbnail w-100 h-100 object-fit-cover" style="max-width: 8rem; max-height: 8rem;">
                 @endif
             </div>
+            
             <button formnovalidate="formnovalidate" type="submit" class="btn btn-primary">Update Post</button>
         </form>
     </div>
@@ -43,14 +57,14 @@
         }
     </script>
     <script type="module">
-        import { ClassicEditor, Essentials, Bold, Italic, Font, Paragraph } from 'ckeditor5';
+        import { ClassicEditor,Heading, Essentials, Bold, Italic, Font, Paragraph,Title } from 'ckeditor5';
     
         const editorConfig = {
-            plugins: [Essentials, Bold, Italic, Font, Paragraph],
+            plugins: [Essentials, Bold, Italic, Font, Paragraph, Heading],
             toolbar: {
                 items: [
                     'undo', 'redo', '|', 'bold', 'italic', '|',
-                    'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor'
+                    'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor','heading'
                 ]
             },
             height: '500px' 
